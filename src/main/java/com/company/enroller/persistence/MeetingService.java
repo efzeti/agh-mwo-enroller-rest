@@ -38,4 +38,18 @@ public class MeetingService {
 		transaction.commit();
 
 	}
+
+	public void deleteMeeting(Meeting meeting) {
+
+		Transaction transaction = this.session.beginTransaction();
+		session.delete(meeting);
+		transaction.commit();
+	}
+
+	public void putMeeting(Meeting meeting) {
+
+		Transaction transaction = this.session.beginTransaction();
+		session.merge(meeting);
+		transaction.commit();
+	}
 }

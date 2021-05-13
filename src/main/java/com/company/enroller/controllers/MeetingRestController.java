@@ -49,7 +49,7 @@ public class MeetingRestController {
     }
 
     @RequestMapping(value = "/{id}/participants", method = RequestMethod.POST)
-    public ResponseEntity<?> addParticipant(@PathVariable("id") long id, @RequestBody Participant participant){
+    public ResponseEntity<?> addParticipantToMeeting(@PathVariable("id") long id, @RequestBody Participant participant){
 
 
         Meeting meeting = meetingService.findById(id);
@@ -65,7 +65,7 @@ public class MeetingRestController {
     }
 
     @RequestMapping(value = "/{id}/participants", method = RequestMethod.GET)
-    public ResponseEntity<?> getParticipants(@PathVariable("id") long id){
+    public ResponseEntity<?> getMeetingParticipants(@PathVariable("id") long id){
 
 
         Meeting meeting = meetingService.findById(id);
@@ -78,5 +78,50 @@ public class MeetingRestController {
 
 
         return new ResponseEntity<Collection<Participant>>(participants, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteMeeting(@PathVariable("id") long id){
+
+
+        Meeting meeting = meetingService.findById(id);
+
+        if (meeting == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        meetingService.deleteMeeting(meeting);
+
+        return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> putMeeting(@PathVariable("id") long id, @RequestBody Meeting meeting) {
+
+        meeting.setId(id);
+
+
+        if (meetingService.findById(id) == null){
+            return new ResponseEntity("Unable to put. A meeting with id " + meeting.getId() + " does not exist.", HttpStatus.NOT_FOUND);
+        }
+
+        meetingService.putMeeting(meeting);
+
+        return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/participants", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteMeetingParticipant(@PathVariable("id") long id, @RequestBody Participant participant){
+
+
+        Meeting meeting = meetingService.findById(id);
+
+        if (meeting == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        meeting.removeParticipant(participant);
+
+        return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
     }
 }
