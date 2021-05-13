@@ -60,7 +60,7 @@ public class ParticipantRestController {
 //	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> deleteParticipant(@PathVariable("id") String login, @RequestBody Participant participant) {
+	public ResponseEntity<?> putParticipant(@PathVariable("id") String login, @RequestBody Participant participant) {
 		if (participantService.findByLogin(login) == null){
 			return new ResponseEntity("Unable to put. A participant with login " + participant.getLogin() + " does not exist.", HttpStatus.NOT_FOUND);
 		}
