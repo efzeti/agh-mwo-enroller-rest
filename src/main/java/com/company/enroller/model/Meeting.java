@@ -65,8 +65,14 @@ public class Meeting {
 	}
 
 	public void removeParticipant(Participant participant) {
+		for (Participant participantFromSet : participants){
+			if (participantFromSet.getLogin().equals(participant.getLogin()) && participantFromSet.getPassword().equals(participant.getPassword())){
+				participant = participantFromSet;
+			}
+		}
 		this.participants.remove(participant);
 	}
+
 
 	public Collection<Participant> getParticipants() {
 		return participants;
